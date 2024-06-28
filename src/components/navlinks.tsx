@@ -1,11 +1,10 @@
 "use client";
-
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 interface LinkType {
     url: string;
-    title: string;
+    icon: React.ElementType; // Define icon as a React element type
 }
 
 interface NavLinkProps {
@@ -14,15 +13,16 @@ interface NavLinkProps {
 
 const NavLink: React.FC<NavLinkProps> = ({ link }) => {
     const pathName = usePathname();
+    const Icon = link.icon; // Extract the icon component from props
 
     return (
-        <Link
-            className={`rounded p-1 ${pathName === link.url ? "bg-gray-500 rounded-3xl text-white" : ""}`}
-            href={link.url}
-        >
-            {link.title}
+        <Link href={link.url}>
+            <div className={`flex items-center gap-1 p-5 cursor-pointer ${pathName === link.url ? "bg-gray-500 rounded-3xl text-white" : ""}`}>
+                {Icon && <Icon className="text-xl" />} {/* Render icon if available */}
+            </div>
         </Link>
     );
 };
 
 export default NavLink;
+

@@ -4,7 +4,7 @@ import React, { useRef, useState, FormEvent } from "react";
 import Link from "next/link";
 import { MotionProps, motion } from "framer-motion";
 import { twMerge } from "tailwind-merge";
-import { FiArrowRight, FiMail, FiMapPin, FiCheck, FiX } from "react-icons/fi";
+import { FiArrowRight, FiMail, FiMessageSquare, FiCheck, FiX } from "react-icons/fi";
 import { SiGithub, SiTwitch, SiTwitter, SiYoutube } from "react-icons/si";
 import emailjs from "@emailjs/browser";
 
@@ -114,9 +114,9 @@ const HeaderBlock: React.FC = () => (
       className="mb-4 h-32 rounded-full"
     />
     <h1 className="mb-12 text-4xl font-medium leading-tight">
-      We are Onibi Yamete.{" "}
+      We are Aniflow.{" "}
       <span className="text-zinc-400">
-        We are building Onibi did you understand you fucking human.
+        We are a game studio.
       </span>
     </h1>
     <Link
@@ -203,8 +203,8 @@ const AboutBlock: React.FC = () => (
 
 const LocationBlock: React.FC = () => (
   <Block className="col-span-12 flex flex-col items-center gap-4 md:col-span-3">
-    <FiMapPin className="text-3xl" />
-    <p className="text-center text-lg text-zinc-400">Cyberspace</p>
+    <FiMessageSquare className="text-3xl" />
+    <p className="text-center text-lg text-zinc-400">Write Here</p>
   </Block>
 );
 
@@ -237,14 +237,15 @@ const EmailListBlock: React.FC<EmailListBlockProps> = ({ formRef, sendEmail, suc
         className="flex-1 rounded border border-zinc-700 bg-zinc-800 px-3 py-1.5 transition-colors focus:border-red-300 focus:outline-0"
       />
       <button
-        type="submit"
-        className={`flex items-center gap-2 whitespace-nowrap rounded px-3 py-2 text-sm font-medium transition-colors
-          ${success ? "bg-green-500 text-white" : error ? "bg-red-500 text-white" : "bg-zinc-50 text-zinc-900 hover:bg-zinc-300"}`}
-        disabled={sending}
-      >
-        {success ? <FiCheck /> : error ? <FiX /> : <FiMail />}
-        {sending ? "Sending..." : "Send"}
-      </button>
+  type="submit"
+  className={`flex items-center gap-2 whitespace-nowrap rounded px-3 py-2 text-sm font-medium transition-colors
+    ${success ? "bg-green-500 text-white" : error ? "bg-red-500 text-white" : "bg-zinc-50 text-zinc-900 hover:bg-zinc-300"}`}
+  disabled={sending}
+>
+  {success ? <FiCheck /> : error ? <FiX /> : <FiMail />}
+  {sending ? "Sending..." : error ? "Failed" : "Send"}
+</button>
+
     </form>
   </Block>
 );
