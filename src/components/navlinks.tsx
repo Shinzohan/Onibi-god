@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 
 interface LinkType {
     url: string;
-    icon: React.ElementType; // Define icon as a React element type
+    icon: React.ElementType; 
 }
 
 interface NavLinkProps {
@@ -13,7 +13,7 @@ interface NavLinkProps {
 
 const NavLink: React.FC<NavLinkProps> = ({ link }) => {
     const pathName = usePathname();
-    const Icon = link.icon; // Extract the icon component from props
+    const Icon = link.icon; 
 
     return (
         <Link href={link.url}>

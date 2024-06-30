@@ -29,7 +29,7 @@ const AnimatedPage: React.FC<AnimatedPageProps> = ({ children }) => {
                     {[...Array(10)].map((_, i) => (
                         <motion.div
                             key={i}
-                            className="h-full bg-[#C73659]"
+                            className="h-full bg-[#D77FA1]"
                             initial="initial"
                             animate="animate"
                             exit="exit"

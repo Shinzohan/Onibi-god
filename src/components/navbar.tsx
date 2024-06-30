@@ -5,15 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import NavLink from "./navlinks";
 import Button from "./button";
-import { FiHome, FiPlay, FiMessageSquare } from "react-icons/fi";
+import { FaHome, FaMailBulk, FaGamepad } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { gsap } from "gsap";
-import { SiDiscord, SiTwitch, SiSteam } from "react-icons/si"; // Adjusted icons
+import { SiDiscord, SiTwitch, SiSteam } from "react-icons/si"; 
 
 const links = [
-    { url: "/", icon: FiHome },
-    { url: "/Game", icon: FiPlay },
-    { url: "/contact", icon: FiMessageSquare },
+    { url: "/", icon: FaHome },
+    { url: "/Game", icon: FaGamepad },
+    { url: "/contact", icon: FaMailBulk },
 ];
 
 const Navbar = () => {
@@ -87,7 +87,7 @@ const Navbar = () => {
                     <Link href="/" passHref>
                         <div
                             ref={logoRef}
-                            className="relative bg-black text-white p-[50px] rounded-md flex md:right-12 items-center justify-center z-50 h-[100px] xl:right-36"
+                            className="relative bg-black text-white rounded-md flex md:right-12 items-center justify-center z-50 xl:right-36"
                         >
                             <Image
                                 src="/Aniflow.svg"

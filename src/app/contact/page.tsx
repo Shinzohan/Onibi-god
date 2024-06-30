@@ -194,8 +194,8 @@ const AboutBlock: React.FC = () => (
     <p>
       Our passion is to build games.{" "}
       <span className="text-zinc-400">
-        We build stunning games that you can never imagine but we promise to deliver our contact. Do you
-        understand, you human?
+        We build stunning games that you can never imagine but we promise to deliver our content. 
+        Happy Gaming👻
       </span>
     </p>
   </Block>
