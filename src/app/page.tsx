@@ -1,17 +1,21 @@
-"use client"
+"use client";
 
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 import { gsap } from 'gsap';
-import { FaPlay } from 'react-icons/fa'; 
+import { FaPlay,FaTimes } from 'react-icons/fa';
+import { SiInstagram, SiReddit, SiYoutube, SiFacebook,SiQuicktime } from 'react-icons/si';
 
 const Home: React.FC = () => {
+  const [showVideo, setShowVideo] = useState(false);
   const textRef = useRef<HTMLDivElement>(null);
-  const bgRef = useRef<HTMLDivElement>(null);
+  const bgRef = useRef<HTMLVideoElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const iconsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (textRef.current && bgRef.current) {
+    if (textRef.current && bgRef.current && buttonRef.current && overlayRef.current && iconsRef.current) {
       const tl = gsap.timeline({ defaults: { duration: 0.6, ease: "power2.out" } });
 
       tl.fromTo(
@@ -21,13 +25,44 @@ const Home: React.FC = () => {
       );
 
       tl.fromTo(
-        textRef.current.querySelectorAll('p'),
+        overlayRef.current,
+        { opacity: 0 },
+        { opacity: 1, duration: 1.5 },
+        '-=3'
+      );
+
+      tl.fromTo(
+        textRef.current.querySelectorAll('p, h1, button'),
         { autoAlpha: 0, y: 50 },
         { autoAlpha: 1, y: 0, stagger: 0.2 },
         '-=1'
       );
+
+      tl.fromTo(
+        iconsRef.current.querySelectorAll('svg'),
+        { autoAlpha: 0, y: 50 },
+        { autoAlpha: 1, y: 0, stagger: 0.2 },
+        '-=1'
+      );
+
+      // Animation for circles
+      gsap.to(".circle", {
+        rotate: 360,
+        transformOrigin: 'center',
+        duration: 5,
+        repeat: -1,
+        ease: "linear"
+      });
     }
   }, []);
+
+  const handlePlayClick = () => {
+    setShowVideo(true);
+  };
+
+  const handleExitClick = () => {
+    setShowVideo(false);
+  };
 
   return (
     <motion.div
@@ -36,35 +71,96 @@ const Home: React.FC = () => {
       animate={{ y: 0 }}
       transition={{ duration: 1 }}
     >
-      <div ref={bgRef} className="absolute w-full h-full overflow-hidden z-0">
-        <Image
-          src={"/onibisteam.png"}
-          alt="Background Image"
-          fill
-          objectFit="cover"
+      <div className="absolute w-full h-full overflow-hidden z-0">
+        <video
+          ref={bgRef}
+          src="/trial.mp4"
+          autoPlay
+          loop
+          muted
+          className="absolute w-full h-full object-cover"
+          preload="auto"
+          poster="/Onibisteam.png"
         />
-        <div className="absolute w-full h-full bg-black bg-opacity-60" />
+        <div ref={overlayRef} className="absolute w-full h-full bg-gradient-to-t from-black via-transparent to-black" />
       </div>
 
-      {/* CONTENT */}
-      <div className="relative z-10 flex flex-col items-center justify-center h-full px-4 sm:px-8 md:px-12 lg:px-20 xl:px-48 text-center">
-        <div ref={textRef} className="w-full lg:w-1/2 flex flex-col items-center justify-center gap-8">
+      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center">
+        <div ref={textRef} className="flex flex-col items-center justify-center gap-8">
           <div className="text-center text-white">
-            <h1 className="text-6xl md:text-4xl font-bold leading-tight text-shadow">
-            Dash, possess, and explore your way 
+            <h1 className="text-4xl md:text-6xl font-bold leading-tight">
+              Welcome to Our Game Studio
             </h1>
-            <p className="text-6xl md:text-4xl  leading-tight text-shadow">
-            through different areas as you accompany a child on their adventures 
-            </p>
-            <p className="text-6xl md:text-4xl  leading-tight text-shadow">
-            as their fledgling guardian spirit
-            </p>
+            <p className="mt-4 text-xl md:text-2xl">Creating immersive gaming experiences</p>
+            <div className="mt-10 flex justify-center items-center relative">
+              <div className="relative">
+                <button
+                  ref={buttonRef}
+                  className="relative z-10 w-[80px] h-[80px] border border-transparent bg-black text-white flex items-center justify-center text-xl font-medium rounded-full bg-opacity-50 hover:bg-black transition-all duration-300"
+                  onClick={handlePlayClick}
+                >
+                  <FaPlay />
+                </button>
+                {/* Circle 1 */}
+                <motion.div
+                  className="absolute inset-0 flex items-center justify-center"
+                  initial={{ rotate: 0 }}
+                  animate={{ rotate: 360 }}
+                  transition={{
+                    duration: 5,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
+                >
+                  <div className="w-[100px] h-[100px] rounded-full bg-[#41C9E2] bg-opacity-50 circle"></div>
+                </motion.div>
+                {/* Circle 2 */}
+                <motion.div
+                  className="absolute inset-0 flex items-center justify-center"
+                  initial={{ rotate: 0 }}
+                  animate={{ rotate: -360 }}
+                  transition={{
+                    duration: 7,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
+                >
+                  <div className="w-[120px] h-[120px] rounded-full bg-[#41C9E2] bg-opacity-50 circle"></div>
+                </motion.div>
+              </div>
+            </div>
           </div>
-          {/* BUTTON */}
-          <button className="relative mt-10 px-6 py-3 border border-white text-white flex items-center justify-center text-xl font-medium rounded-sm bg-black bg-opacity-50 hover:bg-opacity-75 transition-all duration-300">
-            <FaPlay className="" /> 
-          </button>
         </div>
+      </div>
+
+      {showVideo && (
+        <div className="absolute inset-0 z-20 flex items-center justify-center bg-black bg-opacity-75">
+          <div className="relative w-[80%] h-[80%] mb-32">
+            <iframe
+              width="100%"
+              height="100%"
+              src="https://www.youtube.com/embed/YbkXclwDjSg?si=GIGCHqMs4WjmJHuU"
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            ></iframe>
+            <button
+              className="absolute -top-5 -right-5 text-black text-2xl"
+              onClick={handleExitClick}
+            >
+              <FaTimes className='rounded-3xl bg-white' />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Footer */}
+      <div ref={iconsRef} className="absolute bottom-0 left-10 mb-4 ml-4 flex space-x-4 pb-32 gap-5">
+        <SiYoutube className="text-3xl text-white" />
+        <SiFacebook className="text-3xl text-white" />
+        <SiReddit className="text-3xl text-white" />
+        <SiInstagram className="text-3xl text-white" />
       </div>
     </motion.div>
   );
