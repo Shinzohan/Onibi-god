@@ -52,7 +52,7 @@ const Contact: React.FC = () => {
   };
 
   return (
-    <div className="h-full bg-black p-20 text-zinc-50 overflow-scroll">
+    <div className="h-full bg-black p-20 text-zinc-50 overflow-scroll font-medieval">
       <motion.div
         initial="initial"
         animate="animate"
@@ -202,7 +202,7 @@ const AboutBlock: React.FC = () => (
 );
 
 const LocationBlock: React.FC = () => (
-  <Block className="col-span-12 flex flex-col items-center gap-4 md:col-span-3">
+  <Block className="col-span-12 flex flex-col items-center gap-4 md:col-span-12 xl:col-span-12">
     <FiMessageSquare className="text-3xl" />
     <p className="text-center text-lg text-zinc-400">Write Here</p>
   </Block>
@@ -217,37 +217,43 @@ type EmailListBlockProps = {
 };
 
 const EmailListBlock: React.FC<EmailListBlockProps> = ({ formRef, sendEmail, success, error, sending }) => (
-  <Block className="col-span-12 md:col-span-9">
-    <p className="mb-3 text-lg">Contact Us</p>
-    <form
-      onSubmit={sendEmail}
-      ref={formRef}
-      className="flex items-center gap-2"
+ <Block className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-12 xl:col-span-12">
+  <p className="mb-3 text-lg">Contact Us</p>
+  <form
+    onSubmit={sendEmail}
+    ref={formRef}
+    className="flex flex-col gap-4" // Adjusted flex direction to column
+  >
+    <textarea
+      name="user_message"
+      placeholder="Enter your Message"
+      className="h-32 rounded border border-zinc-700 bg-zinc-800 px-3 py-2 transition-colors focus:border-red-300 focus:outline-0 resize-none"
+      style={{ minHeight: '32px', maxWidth: "100%" }}
+      onChange={(e) => {
+        e.target.style.height = 'auto'; 
+        e.target.style.height = `${Math.min(e.target.scrollHeight, 300)}px`; 
+      }}
+    />
+    <input
+      type="email"
+      name="user_email"
+      placeholder="Enter your email"
+      className="rounded h-[50px] border border-zinc-700 bg-zinc-800 px-3 py-2 transition-colors focus:border-red-300 focus:outline-0"
+      style={{ maxWidth: "100%" }} 
+    />
+    <button
+      type="submit"
+      className={`whitespace-nowrap h-[50px] flex justify-center items-center gap-2 rounded px-3 py-2 text-sm font-medium transition-colors
+        ${success ? "bg-green-500 text-white" : error ? "bg-red-500 text-white" : "bg-zinc-50 text-zinc-900 hover:bg-zinc-300"}`}
+      disabled={sending}
     >
-      <input
-        type="text"
-        name="user_message"
-        placeholder="Enter your Message"
-        className="flex-1 rounded border border-zinc-700 bg-zinc-800 px-3 py-1.5 transition-colors focus:border-red-300 focus:outline-0"
-      />
-      <input
-        type="email"
-        name="user_email"
-        placeholder="Enter your email"
-        className="flex-1 rounded border border-zinc-700 bg-zinc-800 px-3 py-1.5 transition-colors focus:border-red-300 focus:outline-0"
-      />
-      <button
-  type="submit"
-  className={`flex items-center gap-2 whitespace-nowrap rounded px-3 py-2 text-sm font-medium transition-colors
-    ${success ? "bg-green-500 text-white" : error ? "bg-red-500 text-white" : "bg-zinc-50 text-zinc-900 hover:bg-zinc-300"}`}
-  disabled={sending}
->
-  {success ? <FiCheck /> : error ? <FiX /> : <FiMail />}
-  {sending ? "Sending..." : error ? "Failed" : "Send"}
-</button>
+      {success ? <FiCheck /> : error ? <FiX /> : <FiMail />}
+      {sending ? "Sending..." : error ? "Failed" : "Send"}
+    </button>
+  </form>
+</Block>
 
-    </form>
-  </Block>
+
 );
 
 const Footer: React.FC = () => {

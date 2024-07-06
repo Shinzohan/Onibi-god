@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
-import { FaPlay,FaTimes } from 'react-icons/fa';
-import { SiInstagram, SiReddit, SiYoutube, SiFacebook,SiQuicktime } from 'react-icons/si';
+import { FaPlay } from 'react-icons/fa';
+import { SiInstagram, SiReddit, SiYoutube, SiFacebook } from 'react-icons/si';
 
 const Home: React.FC = () => {
-  const [showVideo, setShowVideo] = useState(false);
   const textRef = useRef<HTMLDivElement>(null);
   const bgRef = useRef<HTMLVideoElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -56,14 +56,6 @@ const Home: React.FC = () => {
     }
   }, []);
 
-  const handlePlayClick = () => {
-    setShowVideo(true);
-  };
-
-  const handleExitClick = () => {
-    setShowVideo(false);
-  };
-
   return (
     <motion.div
       className="relative h-screen overflow-hidden"
@@ -94,13 +86,13 @@ const Home: React.FC = () => {
             <p className="mt-4 text-xl md:text-2xl">Creating immersive gaming experiences</p>
             <div className="mt-10 flex justify-center items-center relative">
               <div className="relative">
+                <Link href="https://www.youtube.com/watch?v=YbkXclwDjSg" target='_blank'>
                 <button
                   ref={buttonRef}
-                  className="relative z-10 w-[80px] h-[80px] border border-transparent bg-black text-white flex items-center justify-center text-xl font-medium rounded-full bg-opacity-50 hover:bg-black transition-all duration-300"
-                  onClick={handlePlayClick}
+                  className="relative z-10 w-[80px] h-[80px] border border-transparent bg-black text-white flex items-center justify-center text-xl font-medium rounded-full  bg-opacity-50 hover:bg-black transition-all duration-300"
                 >
                   <FaPlay />
-                </button>
+                </button></Link>
                 {/* Circle 1 */}
                 <motion.div
                   className="absolute inset-0 flex items-center justify-center"
@@ -132,28 +124,6 @@ const Home: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {showVideo && (
-        <div className="absolute inset-0 z-20 flex items-center justify-center bg-black bg-opacity-75">
-          <div className="relative w-[80%] h-[80%] mb-32">
-            <iframe
-              width="100%"
-              height="100%"
-              src="https://www.youtube.com/embed/YbkXclwDjSg?si=GIGCHqMs4WjmJHuU"
-              title="YouTube video player"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-            ></iframe>
-            <button
-              className="absolute -top-5 -right-5 text-black text-2xl"
-              onClick={handleExitClick}
-            >
-              <FaTimes className='rounded-3xl bg-white' />
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* Footer */}
       <div ref={iconsRef} className="absolute bottom-0 left-10 mb-4 ml-4 flex space-x-4 pb-32 gap-5">
