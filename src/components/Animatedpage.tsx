@@ -29,7 +29,7 @@ const AnimatedPage: React.FC<AnimatedPageProps> = ({ children }) => {
                     {[...Array(10)].map((_, i) => (
                         <motion.div
                             key={i}
-                            className="h-full bg-[#874CCC]"
+                            className="h-full bg-white"
                             initial="initial"
                             animate="animate"
                             exit="exit"
@@ -48,7 +48,7 @@ const AnimatedPage: React.FC<AnimatedPageProps> = ({ children }) => {
 
                 {/* Text Animation */}
                 <motion.div
-                    className="fixed m-auto top-0 bottom-0 left-0 right-0 text-black text-8xl cursor-default z-50 pointer-events-none w-fit h-fit"
+                    className="fixed m-auto top-0 bottom-0 left-0 right-0 text-black text-8xl cursor-default z-50 pointer-events-none w-fit h-fit font-medieval"
                     initial={{ opacity: 1, scale: 0.8 }}
                     animate={{ opacity: 0, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}

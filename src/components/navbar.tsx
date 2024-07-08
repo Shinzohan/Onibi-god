@@ -55,18 +55,18 @@ const Navbar = () => {
     const listVariants = {
         closed: { x: "100vw" },
         opened: {
-            rotate: 360,
-            clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-            x: 0,
-            transition: {
-                when: "beforeChildren",
-                type: "spring",
-                staggerChildren: 0.2,
-                duration: 1,
-                ease: "backInOut",
-            },
+          rotate: 100,
+          x: 0,
+          transition: {
+            type: "spring",
+            stiffness: 60,
+            damping: 10,
+            staggerChildren: 0.1, rotate: 100,
+            duration: 5,
+          },
         },
-    };
+      };
+      
 
     const listItemVariants = {
         closed: { x: -10, opacity: 0 },
@@ -153,7 +153,7 @@ const Navbar = () => {
                             variants={listVariants}
                             initial="closed"
                             animate="opened"
-                            className="absolute top-0 left-0 w-screen h-screen bg-black text-white flex flex-col items-center justify-center gap-8 text-4xl"
+                            className="absolute top-0 left-0 w-screen h-screen bg-white text-white flex flex-col items-center justify-center gap-8 text-4xl"
                             style={{ zIndex: "50" }}
                         >
                             {links.map((link, index) => (
@@ -163,7 +163,7 @@ const Navbar = () => {
                                     key={index}
                                 >
                                     <Link href={link.url}>
-                                        <link.icon className="text-4xl" />
+                                        <link.icon className="text-4xl text-black rotate-[260deg]" />
                                     </Link>
                                 </motion.div>
                             ))}

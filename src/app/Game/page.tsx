@@ -1,29 +1,13 @@
 'use client';
+import { useRef } from 'react';
 import { motion, useScroll } from 'framer-motion';
-import { useEffect, useRef } from 'react';
-import Image from 'next/image';
-import { gsap, Power4 } from 'gsap';
 import Card from '@/components/card';
+import LaunchingText from '@/components/Animatedtext';
 import { projects } from '../data';
 
-const PostCard = () => {
-  const containerRef = useRef(null);
+const PostCard: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ container: containerRef });
-
-  useEffect(() => {
-    gsap.fromTo(
-      '.title-div',
-      { rotation: 0 },
-      {
-        rotation: 1800,
-        duration: 3,
-        ease: Power4.easeOut,
-        onComplete: () => {
-          gsap.to('.title-div', { rotation: 0, duration: 2, ease: 'elastic.out(2, 0.5)' });
-        },
-      }
-    );
-  }, []);
 
   return (
     <div className="fixed inset-0 bg-black text-white overflow-hidden font-medieval">
@@ -35,28 +19,43 @@ const PostCard = () => {
         transition={{ duration: 1 }}
       >
         {/* Title Section */}
-        <div className="title-div h-screen flex flex-col items-center justify-center text-8xl text-center bg-black shadow-2xl rounded-lg border-4 border-purple-900">
-           <span className='bg-white text-black border rounded-2xl flex items-center justify-center p-5 mb-5'>CheckOut Our Gameplay</span>
+        <div className="title-div h-screen flex flex-col items-center justify-center text-8xl text-center bg-black shadow-2xl rounded-lg border-4 border-black">
+          <span className="border-black text-white border rounded-2xl flex items-center justify-center p-5 mb-5">
+            <LaunchingText /> 
+          </span>
   
-           <div className="flex justify-center space-x-4 mt-10">
-    {['Onibisteam.png', 'Onibisteam.png', 'Onibisteam.png'].map((src, index) => (
-      <div key={index} className="w-48 h-72 rounded-full overflow-hidden relative">
-        <Image
-          src={`/${src}`}
-          alt={`Gameplay ${index + 1}`}
-          layout="fill"
-          objectFit="cover"
-        />
-      </div>
-    ))}
-  </div>
-</div>
+          <motion.svg
+            initial={{ y: 0 }}
+            animate={{ opacity: 1, y: "20px" }}
+            transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+            viewBox="0 0 48 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            width={100}
+            height={100}
+          >
+            {/* Arrows */}
+            <path
+              d="M24 18 L30 6 L24 12 L18 6 L24 18"
+              stroke="#000000"
+              strokeWidth="1"
+              fill="yellow"
+            />
+    
+            <path
+              d="M24 42 L30 30 L24 36 L18 30 L24 42"
+              stroke="#000000"
+              strokeWidth="1"
+              fill="yellow"
+            />
+          </motion.svg>
+        </div>
+        
        
-
         {/* Parallax Cards Section */}
         <div className="relative">
           {projects.map((project, i) => {
-            const targetScale = 1 - ((projects.length - i) * 0.05);
+            const targetScale = 1 - ((projects.length - i) * 0.06);
             return (
               <Card
                 key={`p_${i}`}

@@ -1,73 +1,104 @@
 "use client";
 
-import React, { useRef, useState, FormEvent } from "react";
+import React, { useRef, useState, FormEvent, useCallback, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { MotionProps, motion } from "framer-motion";
 import { twMerge } from "tailwind-merge";
 import { FiArrowRight, FiMail, FiMessageSquare, FiCheck, FiX } from "react-icons/fi";
 import { SiGithub, SiTwitch, SiTwitter, SiYoutube } from "react-icons/si";
 import emailjs from "@emailjs/browser";
+import Notification from "@/components/Notification";
+
+const blockVariants = {
+  initial: { scale: 0.5, y: 50, opacity: 0 },
+  animate: { scale: 1, y: 0, opacity: 1 },
+};
+
+const RATE_LIMIT_DURATION = 60000; 
 
 const Contact: React.FC = () => {
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(false);
-  const [sending, setSending] = useState(false);
+  const [formState, setFormState] = useState({ success: false, error: false, sending: false });
+  const [lastSubmissionTime, setLastSubmissionTime] = useState(0);
+  const [notification, setNotification] = useState({ isVisible: false, message: '' });
   const form = useRef<HTMLFormElement>(null);
 
-  const sendEmail = (e: FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    const storedTime = localStorage.getItem('lastSubmissionTime');
+    if (storedTime) {
+      setLastSubmissionTime(parseInt(storedTime, 10));
+    }
+  }, []);
+
+  const sendEmail = useCallback((e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSending(true);
-    setError(false);
-    setSuccess(false);
+    const now = Date.now();
+
+    if (now - lastSubmissionTime < RATE_LIMIT_DURATION) {
+      setFormState({ success: false, error: true, sending: false });
+      const waitTime = Math.ceil((RATE_LIMIT_DURATION - (now - lastSubmissionTime)) / 1000);
+      setNotification({ 
+        isVisible: true, 
+        message: `Please wait ${waitTime} seconds before submitting again.`
+      });
+      return;
+    }
+
+    setFormState({ success: false, error: false, sending: true });
 
     if (form.current) {
       const message = (form.current.user_message as HTMLInputElement).value.trim();
       const email = (form.current.user_email as HTMLInputElement).value.trim();
 
       if (!message || !email) {
-        setError(true);
-        setSending(false);
+        setFormState({ success: false, error: true, sending: false });
         return;
       }
 
-      emailjs
-        .sendForm(
-          process.env.NEXT_PUBLIC_SERVICE_ID as string,
-          process.env.NEXT_PUBLIC_TEMPLATE_ID as string,
-          form.current,
-          process.env.NEXT_PUBLIC_PUBLIC_KEY as string
-        )
-        .then(
-          () => {
-            setSuccess(true);
-            setSending(false);
-            form.current?.reset();
-          },
-          () => {
-            setError(true);
-            setSending(false);
-          }
-        );
+      emailjs.sendForm(
+        process.env.NEXT_PUBLIC_SERVICE_ID!,
+        process.env.NEXT_PUBLIC_TEMPLATE_ID!,
+        form.current,
+        process.env.NEXT_PUBLIC_PUBLIC_KEY!
+      )
+      .then(() => {
+        setFormState({ success: true, error: false, sending: false });
+        setLastSubmissionTime(now);
+        localStorage.setItem('lastSubmissionTime', now.toString());
+        form.current?.reset();
+      })
+      .catch(() => {
+        setFormState({ success: false, error: true, sending: false });
+      });
     }
+  }, [lastSubmissionTime]);
+
+  const closeNotification = () => {
+    setNotification({ isVisible: false, message: '' });
   };
 
   return (
-    <div className="h-full bg-black p-20 text-zinc-50 overflow-scroll font-medieval">
-      <motion.div
-        initial="initial"
-        animate="animate"
-        transition={{
-          staggerChildren: 0.05,
-        }}
-        className="mx-auto grid max-w-4xl grid-flow-dense grid-cols-12 gap-4"
-      >
-        <HeaderBlock />
-        <SocialsBlock />
-        <AboutBlock />
-        <LocationBlock />
-        <EmailListBlock formRef={form} sendEmail={sendEmail} success={success} error={error} sending={sending} />
-      </motion.div>
-      <Footer />
+    <div className="relative h-full overflow-scroll font-medieval">
+      <div className="relative z-10 bg-transparent bg-opacity-70 p-20 text-zinc-50">
+        <motion.div
+          initial="initial"
+          animate="animate"
+          transition={{ staggerChildren: 0.05 }}
+          className="mx-auto grid max-w-4xl grid-flow-dense grid-cols-12 gap-4"
+        >
+          <HeaderBlock />
+          <SocialsBlock />
+          <AboutBlock />
+          <LocationBlock />
+          <EmailListBlock formRef={form} sendEmail={sendEmail} {...formState} />
+        </motion.div>
+        <Footer />
+      </div>
+      <Notification 
+        message={notification.message} 
+        isVisible={notification.isVisible} 
+        onClose={closeNotification}
+      />
     </div>
   );
 };
@@ -79,18 +110,7 @@ type BlockProps = {
 const Block: React.FC<BlockProps> = ({ className, ...rest }) => {
   return (
     <motion.div
-      variants={{
-        initial: {
-          scale: 0.5,
-          y: 50,
-          opacity: 0,
-        },
-        animate: {
-          scale: 1,
-          y: 0,
-          opacity: 1,
-        },
-      }}
+      variants={blockVariants}
       transition={{
         type: "spring",
         mass: 3,
@@ -98,7 +118,7 @@ const Block: React.FC<BlockProps> = ({ className, ...rest }) => {
         damping: 50,
       }}
       className={twMerge(
-        "col-span-4 rounded-lg border border-black bg-black p-6",
+        "col-span-4 rounded-lg border border-black bg-transparent p-6",
         className
       )}
       {...rest}
@@ -108,10 +128,12 @@ const Block: React.FC<BlockProps> = ({ className, ...rest }) => {
 
 const HeaderBlock: React.FC = () => (
   <Block className="col-span-12 row-span-2 md:col-span-6">
-    <img
+    <Image
       src="/Ghost.png"
+      height={120}
+      width={120}
       alt="avatar"
-      className="mb-4 h-32 rounded-full"
+      className="mb-4 rounded-full"
     />
     <h1 className="mb-12 text-4xl font-medium leading-tight">
       We are Aniflow.{" "}
@@ -216,13 +238,13 @@ type EmailListBlockProps = {
   sending: boolean;
 };
 
-const EmailListBlock: React.FC<EmailListBlockProps> = ({ formRef, sendEmail, success, error, sending }) => (
+const EmailListBlock: React.FC<EmailListBlockProps> = React.memo(({ formRef, sendEmail, success, error, sending }) => (
  <Block className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-12 xl:col-span-12">
   <p className="mb-3 text-lg">Contact Us</p>
   <form
     onSubmit={sendEmail}
     ref={formRef}
-    className="flex flex-col gap-4" // Adjusted flex direction to column
+    className="flex flex-col gap-4" 
   >
     <textarea
       name="user_message"
@@ -252,19 +274,13 @@ const EmailListBlock: React.FC<EmailListBlockProps> = ({ formRef, sendEmail, suc
     </button>
   </form>
 </Block>
-
-
-);
+));
 
 const Footer: React.FC = () => {
+  const year = React.useMemo(() => new Date().getFullYear(), []);
   return (
-    <footer className="mt-12">
-      <p className="text-center text-zinc-400">
-        Made with ❤️ by{" "}
-        <Link href="https://portfolio-shinzohans-projects.vercel.app/" target="_blank" className="text-red-300 hover:underline">
-          @Shinzohan
-        </Link>
-      </p>
+    <footer className="mt-12 text-center text-zinc-500">
+      &copy; {year} Aniflow. All rights reserved.
     </footer>
   );
 };
