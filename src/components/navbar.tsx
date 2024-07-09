@@ -13,8 +13,8 @@ import imageLoader from "../../imageLoader";
 
 const links = [
     { url: "/", icon: FaHome },
-    { url: "/Game", icon: FaGamepad },
-    { url: "/contact", icon: FaMailBulk },
+    { url: "/Game/", icon: FaGamepad },
+    { url: "/contact/", icon: FaMailBulk },
 ];
 
 const Navbar = () => {
