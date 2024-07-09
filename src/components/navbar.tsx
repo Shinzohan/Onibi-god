@@ -9,6 +9,7 @@ import { FaHome, FaMailBulk, FaGamepad } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { gsap } from "gsap";
 import { SiDiscord, SiTwitch, SiSteam } from "react-icons/si"; 
+import imageLoader from "../../imageLoader";
 
 const links = [
     { url: "/", icon: FaHome },
@@ -90,7 +91,8 @@ const Navbar = () => {
                             className="relative bg-black text-white rounded-md flex md:right-12 items-center justify-center z-50 xl:right-36"
                         >
                             <Image
-                                src="/Aniflow.svg"
+                                src={'./Aniflow.svg'}
+                                loader={imageLoader}
                                 alt="Onibi-logo"
                                 height={120}
                                 width={120}
@@ -101,7 +103,7 @@ const Navbar = () => {
             </div>
             {/* Socials */}
             <div className="hidden md:flex gap-1">
-                <Link href="https://github.com/Shinzohan" target="_blank">
+                <Link href="https://discord.gg/vGCjA32myP" target="_blank">
                     <Button
                         icon={SiDiscord}
                         hoverGradient="linear-gradient(to right, #7289DA 100%, transparent 100%)"
@@ -163,11 +165,23 @@ const Navbar = () => {
                                     key={index}
                                 >
                                     <Link href={link.url}>
-                                        <link.icon className="text-4xl text-black rotate-[260deg]" />
+                                        <link.icon className="text-4xl text-black rotate-[260deg] top-12 relative" />
                                     </Link>
                                 </motion.div>
+                                
                             ))}
+                            <div className="relative rotate-[260deg] flex gap-8 text-black left-32 bottom-24">
+                            <Link href="https://discord.gg/vGCjA32myP" target="_blank" >
+                                    <SiDiscord />
+                                    </Link>
+                                    <Link href="https://discord.gg/vGCjA32myP" target="_blank" >
+                                    <SiTwitch />
+                                    </Link>
+                                    <Link href="https://discord.gg/vGCjA32myP" target="_blank" >
+                                    <SiSteam />
+                                    </Link></div>
                         </motion.div>
+                        
                     )}
                 </AnimatePresence>
             </div>

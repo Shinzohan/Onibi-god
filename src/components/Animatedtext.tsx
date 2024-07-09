@@ -6,7 +6,7 @@ const LaunchingText: React.FC = () => {
 
   useEffect(() => {
     const textVariants = [
-      "Check out our gameplay",
+      "Check out Onibi's gameplay",
       "Scroll down my friend"
     ];
     

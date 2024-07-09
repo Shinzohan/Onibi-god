@@ -4,9 +4,9 @@ import React, { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import imageLoader from '../../imageLoader';
 import { gsap } from 'gsap';
 import { FaPlay } from 'react-icons/fa';
-import { SiInstagram, SiReddit, SiYoutube, SiFacebook } from 'react-icons/si';
 import './globals.css';
 
 const Home: React.FC = () => {
@@ -14,8 +14,7 @@ const Home: React.FC = () => {
   const bgRef = useRef<HTMLVideoElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
-  const iconsRef = useRef<HTMLDivElement>(null);
-
+  
   useEffect(() => {
     if (textRef.current && bgRef.current && buttonRef.current && overlayRef.current) {
       const tl = gsap.timeline({ defaults: { duration: 0.2, ease: "power1.out" } });
@@ -72,7 +71,7 @@ const Home: React.FC = () => {
         <div ref={overlayRef} className="absolute w-full h-full bg-gradient-to-t from-black via-transparent to-black" />
       </div>
 
-      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center">
+      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center ">
         <div ref={textRef} className="flex flex-col items-center justify-center gap-8">
           <div className="text-center text-white">
             <h1 className="text-4xl md:text-6xl font-bold leading-tight font-medieval">
@@ -99,7 +98,7 @@ const Home: React.FC = () => {
                     ease: "linear",
                   }}
                 >
-                  <div className="w-[100px] h-[100px] rounded-full bg-gradient-to-r from-blue-400 to-blue-600 circle"></div>
+                  <div className="w-[100px] h-[100px] rounded-full bg-gradient-to-r from-blue-200 to-blue-600 opacity-50 circle"></div>
                 </motion.div>
                 {/* Enhanced Circle 2 */}
                 <motion.div
@@ -112,7 +111,7 @@ const Home: React.FC = () => {
                     ease: "linear",
                   }}
                 >
-                  <div className="w-[120px] h-[120px] rounded-full bg-gradient-to-r from-blue-400 to-blue-600 circle"></div>
+                  <div className="w-[120px] h-[120px] rounded-full bg-gradient-to-r from-blue-200 to-blue-600 opacity-50 circle"></div>
                 </motion.div>
               </div>
             </div>
@@ -125,6 +124,7 @@ const Home: React.FC = () => {
       <div className="absolute bottom-0 left-10 mb-4 ml-4 flex space-x-4 pb-32 gap-5">
         <Image 
         src={'./Onibichan.svg'}
+        loader={imageLoader}
         alt='onibilogo'
         height={100}
         width={100}

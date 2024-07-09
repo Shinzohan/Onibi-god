@@ -9,6 +9,7 @@ import { FiArrowRight, FiMail, FiMessageSquare, FiCheck, FiX } from "react-icons
 import { SiGithub, SiTwitch, SiTwitter, SiYoutube } from "react-icons/si";
 import emailjs from "@emailjs/browser";
 import Notification from "@/components/Notification";
+import imageLoader from "../../../imageLoader";
 
 const blockVariants = {
   initial: { scale: 0.5, y: 50, opacity: 0 },
@@ -129,16 +130,17 @@ const Block: React.FC<BlockProps> = ({ className, ...rest }) => {
 const HeaderBlock: React.FC = () => (
   <Block className="col-span-12 row-span-2 md:col-span-6">
     <Image
-      src="/Ghost.png"
+      src={'./Ghost.png'}
+      loader={imageLoader}
       height={120}
       width={120}
       alt="avatar"
       className="mb-4 rounded-full"
     />
     <h1 className="mb-12 text-4xl font-medium leading-tight">
-      We are Aniflow.{" "}
+      Welcome to Our contact page.{" "}
       <span className="text-zinc-400">
-        We are a game studio.
+        We are a へ￣U￣へ game studio.
       </span>
     </h1>
     <Link

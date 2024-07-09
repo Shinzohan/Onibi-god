@@ -21,19 +21,18 @@ const Card = ({ i, title, description, src, progress, range, targetScale }: Card
     <div ref={containerRef} className="sticky top-0 flex items-center justify-center h-screen">
       <motion.div
         style={{ y, scale, top: `calc(-5vh + ${i * 25}px)` }}
-        className="relative flex flex-col w-[1000px] h-[500px] p-8 transform-origin-top rounded-2xl shadow-2xl bg-white overflow-hidden"
+        className="relative flex flex-col w-[600px] h-[500px] p-6 transform-origin-top rounded-3xl shadow-2xl bg-white overflow-hidden"
       >
-        <div className="absolute inset-0 opacity-10" ></div>
-        <h2 className="text-3xl font-bold text-center mb-6 relative z-10 text-black">{title}</h2>
-        <div className="flex h-full gap-8 relative z-10">
-          <div className="w-[40%] flex flex-col justify-center">
-            <p className="text-lg leading-relaxed text-black">
-              <span className="text-4xl font-semibold">{description.charAt(0)}</span>
+        <div className="absolute inset-0 opacity-10"></div>
+        <h2 className="text-2xl font-bold text-center mb-4 relative z-10 text-black">{title}</h2>
+        <div className="flex flex-col items-center h-full relative z-10">
+          <div className="flex-grow flex items-center justify-center w-[90%]">
+            <p className="text-base leading-relaxed text-black text-center">
+              <span className="text-3xl font-semibold">{description.charAt(0)}</span>
               {description.slice(1)}
             </p>
-           
           </div>
-          <div className="w-[70%] rounded-3xl overflow-hidden shadow-lg">
+          <div className="w-[90%] h-[200px] rounded-2xl overflow-hidden shadow-lg mt-4">
             <motion.div className="w-full h-full">
               <video
                 className="object-cover w-full h-full"
