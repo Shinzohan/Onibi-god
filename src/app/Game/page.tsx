@@ -12,13 +12,13 @@ const PostCard: React.FC = () => {
 
   return (
     <div className="fixed inset-0 bg-black text-white overflow-hidden scroll-smooth font-Mystery">
-      <motion.div
-        ref={containerRef}
-        className="h-full overflow-y-auto"
-        initial={{ y: '-200vh' }}
-        animate={{ y: '0%' }}
-        transition={{ duration: 1 }}
-      >
+     <motion.div
+      ref={containerRef}
+      className="h-full overflow-y-auto"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
         {/* Title Section */}
         <div className="title-div h-screen flex flex-col items-center justify-center text-7xl text-center bg-black shadow-2xl rounded-lg  border-black">
           <span className="border-black text-white border rounded-2xl flex items-center justify-center p-5 mb-5">

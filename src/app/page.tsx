@@ -23,10 +23,15 @@ const Home: React.FC = () => {
   }, [controls, isMobile]);
 
   const containerVariants: Variants = {
-    hidden: { y: "-200vh" },
+    hidden: { 
+      opacity: 0 
+    },
     visible: { 
-      y: 0,
-      transition: { duration: 1 }
+      opacity: 1,
+      transition: { 
+        duration: 1,
+        ease: 'easeInOut' 
+      }
     }
   };
 

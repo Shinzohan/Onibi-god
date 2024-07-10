@@ -5,7 +5,7 @@ const LaunchingText: React.FC = () => {
   useEffect(() => {
     const textVariants = [
       "Check out Onibi's gameplay",
-      "Scroll down my friend"
+      "Scroll down"
     ];
    
     let currentTextIndex = 0;

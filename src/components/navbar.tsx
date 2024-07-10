@@ -102,8 +102,8 @@ const Navbar: React.FC = () => {
               <Image
                 src="/Aniflow.svg"
                 alt="Onibi-logo"
-                height={120}
-                width={120}
+                height={110}
+                width={110}
               />
             </motion.div>
           </Link>
@@ -118,7 +118,7 @@ const Navbar: React.FC = () => {
       </div>
       <div className="md:hidden">
         <button
-          className="w-10 h-8 flex flex-col justify-between z-50 relative"
+          className="w-10 h-5 flex flex-col justify-between z-50 relative"
           onClick={() => setOpen(!open)}
           style={{ zIndex: "60" }}
         >
@@ -127,7 +127,7 @@ const Navbar: React.FC = () => {
               key={part}
               variants={menuVariants[part]}
               animate={open ? "opened" : "closed"}
-              className="w-10 h-1 bg-white rounded origin-left"
+              className="w-7 h-1 bg-white rounded origin-left"
             />
           ))}
         </button>
@@ -143,11 +143,11 @@ const Navbar: React.FC = () => {
       {links.map((link, index) => (
         <motion.div variants={listItemVariants} className="" key={index}>
           <Link href={link.url}>
-            <link.icon className="text-4xl text-black rotate-[260deg] top-20 right-10 relative" />
+            <link.icon className="text-4xl text-black rotate-[260deg] top-12 right-10 relative" />
           </Link>
         </motion.div>
       ))}
-      <motion.div variants={listVariants} className="relative  flex gap-12 text-black left-32 bottom-24">
+      <motion.div variants={listVariants} className="relative  flex gap-12 text-black left-32 bottom-32">
         {socialLinks.map((link, index) => (
           <Link href={link.url} target="_blank" key={index}>
             <link.icon className="rotate-[160deg]" />

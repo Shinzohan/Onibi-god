@@ -136,7 +136,7 @@ const HeaderBlock: React.FC = () => (
       alt="avatar"
       className="mb-4 rounded-full"
     />
-    <h1 className="mb-12  md:text-2xl xl:text-4xl sm:text-sm font-medium leading-tight">
+    <h1 className="mb-12  md:text-2xl xl:text-4xl sm:text-sm font-medium leading-tight ">
       Welcome to Our contact page.{" "}
       <span className="text-zinc-400">
         We are a Ghostly game studio.
@@ -213,7 +213,7 @@ const SocialsBlock: React.FC = () => (
 );
 
 const AboutBlock: React.FC = () => (
-  <Block className="col-span-12 xl:text-3xl mg:text-2xl sm:text-lg leading-snug">
+  <Block className="col-span-12 xl:text-3xl md:text-2xl sm:text-lg leading-snug">
     <p>
       Our passion is to build games.{" "}
       <span className="text-zinc-400">
