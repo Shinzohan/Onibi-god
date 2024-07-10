@@ -9,6 +9,8 @@ import { FiArrowRight, FiMail, FiMessageSquare, FiCheck, FiX } from "react-icons
 import { SiGithub, SiTwitch, SiTwitter, SiYoutube } from "react-icons/si";
 import emailjs from "@emailjs/browser";
 import Notification from "@/components/Notification";
+
+
 const blockVariants = {
   initial: { scale: 0.5, y: 50, opacity: 0 },
   animate: { scale: 1, y: 0, opacity: 1 },
@@ -128,7 +130,7 @@ const Block: React.FC<BlockProps> = ({ className, ...rest }) => {
 const HeaderBlock: React.FC = () => (
   <Block className="col-span-12 row-span-2 md:col-span-6">
     <Image
-      src={'./Ghost.png'}
+      src='/Ghost.png'
       height={120}
       width={120}
       alt="avatar"
