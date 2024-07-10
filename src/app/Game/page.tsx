@@ -4,6 +4,7 @@ import { motion, useScroll } from 'framer-motion';
 import Card from '@/components/card';
 import LaunchingText from '@/components/Animatedtext';
 import { projects } from '../data';
+import '../globals.css'
 
 const PostCard: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -19,7 +20,7 @@ const PostCard: React.FC = () => {
         transition={{ duration: 1 }}
       >
         {/* Title Section */}
-        <div className="title-div h-screen flex flex-col items-center justify-center text-8xl text-center bg-black shadow-2xl rounded-lg border-4 border-black">
+        <div className="title-div h-screen flex flex-col items-center justify-center text-7xl text-center bg-black shadow-2xl rounded-lg  border-black">
           <span className="border-black text-white border rounded-2xl flex items-center justify-center p-5 mb-5">
             <LaunchingText /> 
           </span>
