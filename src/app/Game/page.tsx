@@ -10,7 +10,7 @@ const PostCard: React.FC = () => {
   const { scrollYProgress } = useScroll({ container: containerRef });
 
   return (
-    <div className="fixed inset-0 bg-black text-white overflow-hidden font-medieval scroll-smooth">
+    <div className="fixed inset-0 bg-black text-white overflow-hidden scroll-smooth font-Mystery">
       <motion.div
         ref={containerRef}
         className="h-full overflow-y-auto"

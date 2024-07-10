@@ -9,8 +9,6 @@ import { FiArrowRight, FiMail, FiMessageSquare, FiCheck, FiX } from "react-icons
 import { SiGithub, SiTwitch, SiTwitter, SiYoutube } from "react-icons/si";
 import emailjs from "@emailjs/browser";
 import Notification from "@/components/Notification";
-import imageLoader from "../../../imageLoader";
-
 const blockVariants = {
   initial: { scale: 0.5, y: 50, opacity: 0 },
   animate: { scale: 1, y: 0, opacity: 1 },
@@ -79,8 +77,8 @@ const Contact: React.FC = () => {
   };
 
   return (
-    <div className="relative h-full overflow-scroll font-medieval">
-      <div className="relative z-10 bg-transparent bg-opacity-70 p-20 text-zinc-50">
+    <div className="relative h-full overflow-scroll">
+      <div className="relative z-10 bg-transparent bg-opacity-70 p-20 text-zinc-50 font-Mystery">
         <motion.div
           initial="initial"
           animate="animate"
@@ -131,16 +129,15 @@ const HeaderBlock: React.FC = () => (
   <Block className="col-span-12 row-span-2 md:col-span-6">
     <Image
       src={'./Ghost.png'}
-      loader={imageLoader}
       height={120}
       width={120}
       alt="avatar"
       className="mb-4 rounded-full"
     />
-    <h1 className="mb-12 text-4xl font-medium leading-tight">
+    <h1 className="mb-12  md:text-2xl xl:text-4xl sm:text-sm font-medium leading-tight">
       Welcome to Our contact page.{" "}
       <span className="text-zinc-400">
-        We are a へ￣U￣へ game studio.
+        We are a Ghostly game studio.
       </span>
     </h1>
     <Link
@@ -214,12 +211,12 @@ const SocialsBlock: React.FC = () => (
 );
 
 const AboutBlock: React.FC = () => (
-  <Block className="col-span-12 text-3xl leading-snug">
+  <Block className="col-span-12 xl:text-3xl mg:text-2xl sm:text-lg leading-snug">
     <p>
       Our passion is to build games.{" "}
       <span className="text-zinc-400">
         We build stunning games that you can never imagine but we promise to deliver our content. 
-        Happy Gaming👻
+        Happy Gaming ~_~
       </span>
     </p>
   </Block>
@@ -242,7 +239,7 @@ type EmailListBlockProps = {
 
 const EmailListBlock: React.FC<EmailListBlockProps> = React.memo(({ formRef, sendEmail, success, error, sending }) => (
  <Block className="col-span-12 sm:col-span-12 md:col-span-12 lg:col-span-12 xl:col-span-12">
-  <p className="mb-3 text-lg">Contact Us</p>
+  <p className="mb-3 xl:text-lg md:text-lg sm:text-sm">Contact Us</p>
   <form
     onSubmit={sendEmail}
     ref={formRef}

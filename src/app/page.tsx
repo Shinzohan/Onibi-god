@@ -1,133 +1,175 @@
 "use client";
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import imageLoader from '../../imageLoader';
-import { gsap } from 'gsap';
+import { motion, useAnimation, Variants } from 'framer-motion';
 import { FaPlay } from 'react-icons/fa';
 import './globals.css';
 
 const Home: React.FC = () => {
-  const textRef = useRef<HTMLDivElement>(null);
-  const bgRef = useRef<HTMLVideoElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
-  
+  const [isMobile, setIsMobile] = useState(false);
+  const controls = useAnimation();
+
   useEffect(() => {
-    if (textRef.current && bgRef.current && buttonRef.current && overlayRef.current) {
-      const tl = gsap.timeline({ defaults: { duration: 0.2, ease: "power1.out" } });
-
-      tl.fromTo(
-        bgRef.current,
-        { clipPath: 'circle(0% at 50% 50%)' },
-        { clipPath: 'circle(75% at 50% 50%)', duration: 3.5 }
-      );
-
-      tl.fromTo(
-        overlayRef.current,
-        { opacity: 0 },
-        { opacity: 1, duration: 1.5 },
-        '-=3'
-      );
-
-      tl.fromTo(
-        textRef.current.querySelectorAll('p, h1, button'),
-        { autoAlpha: 0, y: 50 },
-        { autoAlpha: 1, y: 0, stagger: 0.15 },
-        '-=1'
-      );
-
-      // Animation for enhanced circles
-      gsap.to(".circle", {
-        rotate: 360,
-        transformOrigin: 'center',
-        duration: 5,
-        repeat: -1,
-        ease: "linear"
-      });
-    }
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  useEffect(() => {
+    controls.start('visible');
+  }, [controls, isMobile]);
+
+  const containerVariants: Variants = {
+    hidden: { y: "-200vh" },
+    visible: { 
+      y: 0,
+      transition: { duration: 1 }
+    }
+  };
+
+  const textVariants: Variants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: isMobile ? 0 : 3
+      }
+    }
+  };
+
+  const itemVariants: Variants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0 }
+  };
+
+  const bgVariants: Variants = {
+    hidden: { clipPath: 'circle(0% at 50% 50%)' },
+    visible: {
+      clipPath: 'circle(75% at 50% 50%)',
+      transition: { duration: 3.5 }
+    }
+  };
+
+  const circleVariants = {
+    animate1: {
+      rotate: 360,
+      scale: [1, 1.1, 1],
+      transition: {
+        rotate: {
+          duration: 10,
+          repeat: Infinity,
+          ease: "linear"
+        },
+        scale: {
+          duration: 5,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }
+      }
+    },
+    animate2: {
+      rotate: -360,
+      scale: [1, 0.9, 1],
+      transition: {
+        rotate: {
+          duration: 15,
+          repeat: Infinity,
+          ease: "linear"
+        },
+        scale: {
+          duration: 7,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }
+      }
+    },
+  };
 
   return (
     <motion.div
-      className="relative h-screen overflow-hidden"
-      initial={{ y: "-200vh" }}
-      animate={{ y: 0 }}
-      transition={{ duration: 1 }}
+      className="relative h-screen overflow-hidden font-Mystery"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
     >
       <div className="absolute w-full h-full overflow-hidden z-0">
-        <video
-          ref={bgRef}
+        <motion.video
           src="/Background.mp4"
           autoPlay
           loop
           muted
+          playsInline
           className="absolute w-full h-full object-cover"
           preload="auto"
           poster="/Onibisteam.png"
+          variants={bgVariants}
+          initial="hidden"
+          animate={isMobile ? "visible" : controls}
         />
-        <div ref={overlayRef} className="absolute w-full h-full bg-gradient-to-t from-black via-transparent to-black" />
+        <div className="absolute w-full h-full bg-gradient-to-t from-black via-transparent to-black" />
       </div>
 
-      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center ">
-        <div ref={textRef} className="flex flex-col items-center justify-center gap-8">
+      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center">
+        <motion.div 
+          className="flex flex-col items-center justify-center gap-8"
+          variants={textVariants}
+          initial="hidden"
+          animate="visible"
+        >
           <div className="text-center text-white">
-            <h1 className="text-4xl md:text-6xl font-bold leading-tight font-medieval">
+            <motion.h1 variants={itemVariants} className="text-4xl md:text-6xl font-bold leading-tight font-medieval">
               Welcome to Our Game Studio
-            </h1>
-            <p className="mt-4 text-xl md:text-2xl font-medieval">Creating immersive gaming experiences</p>
-            <div className="mt-10 flex justify-center items-center relative">
+            </motion.h1>
+            <motion.p variants={itemVariants} className="mt-4 text-xl md:text-2xl font-medieval">
+              Creating immersive gaming experiences
+            </motion.p>
+            <motion.div variants={itemVariants} className="mt-10 flex justify-center items-center relative">
               <div className="relative">
                 <Link href="https://www.youtube.com/watch?v=YbkXclwDjSg" target='_blank'>
-                <button
-                  ref={buttonRef}
-                  className="relative z-10 w-[80px] h-[80px] border border-transparent bg-black text-white flex items-center justify-center text-xl font-medium rounded-full bg-opacity-50 hover:bg-black transition-all duration-300"
-                >
-                  <FaPlay />
-                </button></Link>
-                {/* Enhanced Circle 1 */}
-                <motion.div
-                  className="absolute inset-0 flex items-center justify-center"
-                  initial={{ rotate: 0 }}
-                  animate={{ rotate: 360 }}
-                  transition={{
-                    duration: 5,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
-                >
-                  <div className="w-[100px] h-[100px] rounded-full bg-gradient-to-r from-blue-200 to-blue-600 opacity-50 circle"></div>
-                </motion.div>
-                {/* Enhanced Circle 2 */}
-                <motion.div
-                  className="absolute inset-0 flex items-center justify-center"
-                  initial={{ rotate: 0 }}
-                  animate={{ rotate: -360 }}
-                  transition={{
-                    duration: 7,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
-                >
-                  <div className="w-[120px] h-[120px] rounded-full bg-gradient-to-r from-blue-200 to-blue-600 opacity-50 circle"></div>
-                </motion.div>
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    className="relative z-10 w-[80px] h-[80px] border border-transparent bg-black text-white flex items-center justify-center text-xl font-medium rounded-full bg-opacity-50 hover:bg-black transition-all duration-300"
+                  >
+                    <FaPlay />
+                  </motion.button>
+                </Link>
+                {!isMobile && (
+                  <>
+                    <motion.div
+                      className="absolute inset-0 flex items-center justify-center"
+                      variants={circleVariants}
+                      animate="animate1"
+                    >
+                      <div className="w-[100px] h-[100px] rounded-full bg-gradient-to-r from-blue-200 to-blue-600 opacity-50"></div>
+                    </motion.div>
+                    <motion.div
+                      className="absolute inset-0 flex items-center justify-center"
+                      variants={circleVariants}
+                      animate="animate2"
+                    >
+                      <div className="w-[120px] h-[120px] rounded-full bg-gradient-to-r from-blue-300 to-blue-500 opacity-50"></div>
+                    </motion.div>
+                  </>
+                )}
               </div>
-            </div>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       </div>
 
-      {/* Footer */}
-    
-      <div className="absolute bottom-0 left-10 mb-4 ml-4 flex space-x-4 pb-32 gap-5">
+      <div className="absolute bottom-0 xl:left-10 mb-4 flex pb-[100px] gap-5 sm:left-1 ml-4">
         <Image 
-        src={'./Onibichan.svg'}
-        loader={imageLoader}
-        alt='onibilogo'
-        height={100}
-        width={100}
+          src='/Onibichan.svg'
+          alt='onibilogo'
+          width={100}
+          height={100}
+          priority
         />
       </div>
     </motion.div>

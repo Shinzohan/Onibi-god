@@ -1,6 +1,6 @@
 'use client';
 import { motion, useTransform, MotionValue } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, memo } from 'react';
 
 type CardProps = {
   i: number;
@@ -12,7 +12,7 @@ type CardProps = {
   targetScale: number;
 };
 
-const Card = ({ i, title, description, src, progress, range, targetScale }: CardProps) => {
+const Card = memo(({ i, title, description, src, progress, range, targetScale }: CardProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const y = useTransform(progress, range, [0, -100]);
   const scale = useTransform(progress, range, [1, targetScale]);
@@ -20,19 +20,22 @@ const Card = ({ i, title, description, src, progress, range, targetScale }: Card
   return (
     <div ref={containerRef} className="sticky top-0 flex items-center justify-center h-screen">
       <motion.div
-        style={{ y, scale, top: `calc(-5vh + ${i * 25}px)` }}
-        className="relative flex flex-col w-[600px] h-[500px] p-6 transform-origin-top rounded-3xl shadow-2xl bg-white overflow-hidden"
+        style={{ 
+          y, 
+          scale, 
+          top: `calc(-5vh + ${i * 25}px)`,
+        }}
+        className="relative flex flex-col p-6 transform-origin-top rounded-3xl shadow-2xl bg-white overflow-hidden xl:w-[900px] xl:h-[500px] sm:w-[600px] sm:h-[500px]"
       >
-        <div className="absolute inset-0 opacity-10"></div>
         <h2 className="text-2xl font-bold text-center mb-4 relative z-10 text-black">{title}</h2>
         <div className="flex flex-col items-center h-full relative z-10">
           <div className="flex-grow flex items-center justify-center w-[90%]">
             <p className="text-base leading-relaxed text-black text-center">
-              <span className="text-3xl font-semibold">{description.charAt(0)}</span>
+              <span className="text-3xl font-semibold">{description[0]}</span>
               {description.slice(1)}
             </p>
           </div>
-          <div className="w-[90%] h-[200px] rounded-2xl overflow-hidden shadow-lg mt-4">
+          <div className="xl:w-[60%] xl:h-[300px] sm:w-[90%] sm:h-[200px] rounded-2xl overflow-hidden shadow-lg mt-4">
             <motion.div className="w-full h-full">
               <video
                 className="object-cover w-full h-full"
@@ -47,6 +50,8 @@ const Card = ({ i, title, description, src, progress, range, targetScale }: Card
       </motion.div>
     </div>
   );
-};
+});
+
+Card.displayName = 'Card';
 
 export default Card;
