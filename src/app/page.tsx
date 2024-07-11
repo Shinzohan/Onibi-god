@@ -109,7 +109,7 @@ const Home: React.FC = () => {
           loop
           muted
           playsInline
-          className="absolute w-full h-full object-cover"
+          className="absolute w-full h-full object-cover opacity-80"
           preload="auto"
           poster="/Onibisteam.png"
           variants={bgVariants}

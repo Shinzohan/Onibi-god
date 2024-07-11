@@ -1,6 +1,7 @@
 'use client';
 import { motion, useTransform, MotionValue } from 'framer-motion';
-import { useRef, memo } from 'react';
+import { useRef, memo, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 type CardProps = {
   i: number;
@@ -16,13 +17,23 @@ const Card = memo(({ i, title, description, src, progress, range, targetScale }:
   const containerRef = useRef<HTMLDivElement>(null);
   const y = useTransform(progress, range, [0, -100]);
   const scale = useTransform(progress, range, [1, targetScale]);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+
+  const { ref: inViewRef, inView } = useInView({
+    threshold: 0.5,
+    triggerOnce: true,
+  });
+
+  const handleVideoLoad = () => {
+    setVideoLoaded(true);
+  };
 
   return (
     <div ref={containerRef} className="sticky top-0 flex items-center justify-center h-screen">
       <motion.div
-        style={{ 
-          y, 
-          scale, 
+        style={{
+          y,
+          scale,
           top: `calc(-5vh + ${i * 25}px)`,
         }}
         className="relative flex flex-col p-5 transform-origin-top rounded-3xl shadow-2xl bg-white overflow-hidden xl:w-[900px] xl:h-[500px] sm:w-[600px] sm:h-[500px]"
@@ -35,15 +46,19 @@ const Card = memo(({ i, title, description, src, progress, range, targetScale }:
               {description.slice(1)}
             </p>
           </div>
-          <div className="xl:w-[60%] xl:h-[300px] sm:w-[90%] sm:h-[200px] rounded-2xl overflow-hidden shadow-lg mt-4">
+          <div ref={inViewRef} className="xl:w-[60%] xl:h-[300px] sm:w-[90%] sm:h-[200px] rounded-2xl overflow-hidden shadow-lg mt-4">
             <motion.div className="w-full h-full">
-              <video
-                className="object-cover w-full h-full"
-                src={`/video/${src}`}
-                autoPlay
-                muted  
-                loop
-              />
+              {inView && (
+                <video
+                  className={`object-cover w-full h-full transition-opacity duration-300 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
+                  src={`/video/${src}`}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  onLoadedData={handleVideoLoad}
+                />
+              )}
             </motion.div>
           </div>
         </div>
@@ -53,5 +68,4 @@ const Card = memo(({ i, title, description, src, progress, range, targetScale }:
 });
 
 Card.displayName = 'Card';
-
 export default Card;
